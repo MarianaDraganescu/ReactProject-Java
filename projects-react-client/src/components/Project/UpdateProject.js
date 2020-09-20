@@ -25,6 +25,10 @@ class UpdateProject extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+
     const {
       id,
       projectName,
@@ -42,10 +46,6 @@ class UpdateProject extends Component {
       startDate,
       endDate,
     });
-
-    if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
-    }
   }
 
   componentDidMount() {
