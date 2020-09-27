@@ -32,8 +32,7 @@ public class Project {
     private Date endDate;
 
     @JsonFormat(pattern = "yyyy-mm-dd")
-    @Column(updatable = false)  //this is useful because if not here whenever we update a project the createdAt value is set to null/
-                                //it overwrites the initial value
+    @Column(updatable = false)  //this is useful because if not here whenever we update a project the createdAt value is set to null///it overwrites the initial value
     private Date createdAt;
 
     @JsonFormat(pattern = "yyyy-mm-dd")
