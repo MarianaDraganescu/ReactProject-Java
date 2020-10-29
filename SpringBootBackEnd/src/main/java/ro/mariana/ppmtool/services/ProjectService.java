@@ -13,7 +13,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final BacklogRepository backlogRepository;
 
-    public ProjectService(final ProjectRepository projectRepository,final BacklogRepository backlogRepository) {
+    public ProjectService(final ProjectRepository projectRepository, final BacklogRepository backlogRepository) {
         this.projectRepository = projectRepository;
         this.backlogRepository = backlogRepository;
     }
@@ -22,13 +22,13 @@ public class ProjectService {
         try {
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
 
-            if(project.getId() == null) {
+            if (project.getId() == null) {
                 Backlog backlog = new Backlog();
                 project.setBacklog(backlog);
                 backlog.setProject(project);
                 backlog.setProjectIdentifier(project.getProjectIdentifier());
             }
-            if(project.getId() != null) {
+            if (project.getId() != null) {
                 project.setBacklog(backlogRepository.findByProjectIdentifier(getProjectIdentifierUpperCase(project.getProjectIdentifier())));
             }
 
@@ -38,31 +38,31 @@ public class ProjectService {
         }
     }
 
-    public Project findProjectByIdentifier(String projectIdentifier){
+    public Project findProjectByIdentifier(String projectIdentifier) {
         Project project = projectRepository.findByProjectIdentifier(projectIdentifier.toUpperCase());
 
-        if(project == null){
+        if (project == null) {
             throw new ProjectIdException("Project with Identifier ' " + projectIdentifier + "' does not exist");
         }
         return project;
     }
 
-    public Iterable<Project> findAllProjects(){
+    public Iterable<Project> findAllProjects() {
         return projectRepository.findAll();
     }
 
-    public void deleteProjectByIdentifier(String projectId){
+    public void deleteProjectByIdentifier(String projectId) {
 
         Project project = projectRepository.findByProjectIdentifier(projectId);
 
-        if(project == null){
+        if (project == null) {
             throw new ProjectIdException("Project with Identifier'" + projectId + "' does not exist");
         }
 
         projectRepository.delete(project);
     }
 
-    private String getProjectIdentifierUpperCase(String identifier){
+    private String getProjectIdentifierUpperCase(String identifier) {
         Project project = projectRepository.findByProjectIdentifier(identifier);
         return project.getProjectIdentifier().toUpperCase();
     }

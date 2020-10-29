@@ -10,6 +10,7 @@ import ro.mariana.ppmtool.services.ProjectTaskService;
 
 import javax.naming.Binding;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/backlogs")
@@ -26,13 +27,18 @@ public class BacklogController {
 
     @PostMapping("/{backlog_id}") //the same as project_id
     public ResponseEntity<?> createAddProjectTask(@Valid @RequestBody final ProjectTask projectTask,
-                                                  BindingResult result, @PathVariable String backlog_id){
+                                                  BindingResult result, @PathVariable String backlog_id) {
 
         ResponseEntity<?> mapError = mapValidationErrorService.mapValidation(result);
-        if(mapError != null) return mapError;
+        if (mapError != null) return mapError;
 
-        ProjectTask projectTask1 = projectTaskService.addProjectTask(backlog_id,projectTask);
+        ProjectTask projectTask1 = projectTaskService.addProjectTask(backlog_id, projectTask);
 
-        return new ResponseEntity<ProjectTask> (projectTask1,HttpStatus.CREATED);
+        return new ResponseEntity<ProjectTask>(projectTask1, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{backlog_id}")
+    public Iterable<ProjectTask> getProjectBacklog(@PathVariable String backlog_id) {
+        return projectTaskService.findBacklogById(backlog_id);
     }
 }

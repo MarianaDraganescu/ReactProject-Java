@@ -33,7 +33,8 @@ public class Project {
     private Date endDate;
 
     @JsonFormat(pattern = "yyyy-mm-dd")
-    @Column(updatable = false)  //this is useful because if not here whenever we update a project the createdAt value is set to null///it overwrites the initial value
+    @Column(updatable = false)
+    //this is useful because if not here whenever we update a project the createdAt value is set to null///it overwrites the initial value
     private Date createdAt;
 
     @JsonFormat(pattern = "yyyy-mm-dd")
@@ -42,16 +43,16 @@ public class Project {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")
     private Backlog backlog;
 
-    public Project(){
+    public Project() {
     }
 
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
         this.createdAt = new Date();
     }
 
     @PreUpdate
-    protected void onUpdate(){
+    protected void onUpdate() {
         this.updatedAt = new Date();
     }
 

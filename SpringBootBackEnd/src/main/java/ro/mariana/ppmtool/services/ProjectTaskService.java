@@ -1,5 +1,6 @@
 package ro.mariana.ppmtool.services;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ro.mariana.ppmtool.domain.Backlog;
 import ro.mariana.ppmtool.domain.ProjectTask;
@@ -19,7 +20,7 @@ public class ProjectTaskService {
         this.projectTaskRepository = projectTaskRepository;
     }
 
-    public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask){
+    public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
 
 
         //Exceptions: Project not found
@@ -38,15 +39,19 @@ public class ProjectTaskService {
         projectTask.setProjectIdentifier(projectIdentifier);
 
         //INITIAL priority when priority null
-       if(projectTask.getPriority()==null){
-          projectTask.setPriority(3);
-       }
+        if (projectTask.getPriority() == null) {
+            projectTask.setPriority(3);
+        }
         //INITIAL status when status is null
 
-        if(projectTask.getStatus()=="" || projectTask.getStatus()==null){
+        if (projectTask.getStatus() == "" || projectTask.getStatus() == null) {
             projectTask.setStatus("TODO");
         }
 
         return projectTaskRepository.save(projectTask);
+    }
+
+    public Iterable<ProjectTask> findBacklogById(String backlog_id) {
+        return projectTaskRepository.findByProjectIdentifierOrderByPriority(backlog_id);
     }
 }

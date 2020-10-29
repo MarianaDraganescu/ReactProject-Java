@@ -19,11 +19,12 @@ public class Backlog {
     //OneToOne with project
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id", nullable = false)
-    @JsonIgnore //only usefull when trying to make crud operations with Postman,when you have a front-end it's not needed anymore
+    @JsonIgnore
+    //only usefull when trying to make crud operations with Postman,when you have a front-end it's not needed anymore
     private Project project;
 
     //OneToMany with ProjectTask
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER, mappedBy = "backlog")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "backlog")
     private List<ProjectTask> projectTasks = new ArrayList<>();
 
 
