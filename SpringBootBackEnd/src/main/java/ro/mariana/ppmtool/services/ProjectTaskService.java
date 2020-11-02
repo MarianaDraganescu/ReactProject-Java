@@ -1,10 +1,12 @@
 package ro.mariana.ppmtool.services;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ro.mariana.ppmtool.domain.Backlog;
+import ro.mariana.ppmtool.domain.Project;
 import ro.mariana.ppmtool.domain.ProjectTask;
+import ro.mariana.ppmtool.exceptions.ProjectNotFoundException;
 import ro.mariana.ppmtool.repositories.BacklogRepository;
+import ro.mariana.ppmtool.repositories.ProjectRepository;
 import ro.mariana.ppmtool.repositories.ProjectTaskRepository;
 
 
@@ -14,10 +16,12 @@ public class ProjectTaskService {
 
     private final BacklogRepository backlogRepository;
     private final ProjectTaskRepository projectTaskRepository;
+    private final ProjectRepository projectRepository;
 
-    public ProjectTaskService(BacklogRepository backlogRepository, ProjectTaskRepository projectTaskRepository) {
+    public ProjectTaskService(BacklogRepository backlogRepository, ProjectTaskRepository projectTaskRepository, ProjectRepository projectRepository) {
         this.backlogRepository = backlogRepository;
         this.projectTaskRepository = projectTaskRepository;
+        this.projectRepository = projectRepository;
     }
 
     public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
@@ -27,6 +31,9 @@ public class ProjectTaskService {
 
         //PTs to be added to a specific backlog(automatically to project), project != null, BL exists
         Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
+        if (backlog == null) {
+            throw new ProjectNotFoundException("Project not found");
+        }
         //set the bl to pt
         projectTask.setBacklog(backlog);
         //we want our project/backlog sequence to be like this: IDPRO-1  IDPRO-2  ...100 101
@@ -52,6 +59,10 @@ public class ProjectTaskService {
     }
 
     public Iterable<ProjectTask> findBacklogById(String backlog_id) {
+        Project project = projectRepository.findByProjectIdentifier(backlog_id);
+        if (project == null) {
+            throw new ProjectNotFoundException("Project not found");
+        }
         return projectTaskRepository.findByProjectIdentifierOrderByPriority(backlog_id);
     }
 }

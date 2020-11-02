@@ -8,9 +8,8 @@ import ro.mariana.ppmtool.domain.ProjectTask;
 import ro.mariana.ppmtool.services.MapValidationErrorService;
 import ro.mariana.ppmtool.services.ProjectTaskService;
 
-import javax.naming.Binding;
 import javax.validation.Valid;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/backlogs")
@@ -20,7 +19,8 @@ public class BacklogController {
     private final ProjectTaskService projectTaskService;
     private final MapValidationErrorService mapValidationErrorService;
 
-    public BacklogController(ProjectTaskService projectTaskService, MapValidationErrorService mapValidationErrorService) {
+    public BacklogController(ProjectTaskService projectTaskService,
+                             MapValidationErrorService mapValidationErrorService) {
         this.projectTaskService = projectTaskService;
         this.mapValidationErrorService = mapValidationErrorService;
     }
@@ -38,7 +38,7 @@ public class BacklogController {
     }
 
     @GetMapping("/{backlog_id}")
-    public Iterable<ProjectTask> getProjectBacklog(@PathVariable String backlog_id) {
-        return projectTaskService.findBacklogById(backlog_id);
+    public ResponseEntity<Iterable<ProjectTask>> getProjectBacklog(@PathVariable String backlog_id) {
+        return new ResponseEntity(projectTaskService.findBacklogById(backlog_id), HttpStatus.OK);
     }
 }
