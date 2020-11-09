@@ -9,6 +9,8 @@ import ro.mariana.ppmtool.repositories.BacklogRepository;
 import ro.mariana.ppmtool.repositories.ProjectRepository;
 import ro.mariana.ppmtool.repositories.ProjectTaskRepository;
 
+import java.util.List;
+
 
 @Service
 public class ProjectTaskService {
@@ -93,5 +95,11 @@ public class ProjectTaskService {
         projectTask = updatedProjectTask;
 
         return projectTaskRepository.save(projectTask);
+    }
+
+    public void deletePTByProjectSequence(String backlog_id, String pt_id) {
+        ProjectTask projectTask = findPTByProjectSequence(backlog_id,pt_id);
+
+        projectTaskRepository.delete(projectTask);
     }
 }
