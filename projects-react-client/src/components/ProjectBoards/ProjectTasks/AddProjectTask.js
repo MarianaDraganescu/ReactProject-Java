@@ -20,11 +20,26 @@ class AddProjectTask extends Component {
             errors: {}
         };
         this.onChange = this.onChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     onChange(e){
         this.setState({[e.target.name] : e.target.value})
     };
+
+    onSubmit(e){
+        e.preventDefault();
+
+        const  newTask = {
+            summary: this.state.summary,
+            acceptanceCriteria: this.state.acceptanceCriteria,
+            status: this.state.status,
+            priority: this.state.priority,
+            dueDate: this.state.dueDate,
+        };
+        this.props.addProjectTask(this.state.projectIdentifier, newTask, this.props.history);
+    };
+
 
     render() {
         const {id} = this.props.match.params;
@@ -38,7 +53,7 @@ class AddProjectTask extends Component {
                             </Link>
                             <h4 className="display-4 text-center">Add Project Task</h4>
                             <p className="lead text-center">Project Name + Project Code</p>
-                            <form>
+                            <form onSubmit={this.onSubmit}>
                                 <div className="form-group">
                                     <input type="text"
                                            className="form-control form-control-lg"
